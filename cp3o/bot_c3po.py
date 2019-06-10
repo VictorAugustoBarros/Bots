@@ -10,6 +10,7 @@
 # Chat ID: -343218807
 # Grupo: DEV - INTEG & Tradutor
 
+
 import time
 import datetime
 import calendar
