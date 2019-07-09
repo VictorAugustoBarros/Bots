@@ -24,7 +24,7 @@ dispatcher = updater.dispatcher
 
 # ----------------------------------------------- Logs ----------------------------------------------#
 logger = logging.getLogger('c3po')
-hdlr = logging.FileHandler('/var/log/bots/c3po.log')
+hdlr = logging.FileHandler('c3po.log')
 pattern = "%(asctime)s | %(levelname)s | %(message)s"
 formatter = logging.Formatter(pattern)
 hdlr.setFormatter(formatter)
