@@ -1,0 +1,15 @@
+version: "2"
+services:
+  bot_telegram:
+    container_name: bot_telegram
+    build: .
+    networks:
+      - webhook
+    volumes:
+      - ./cron/cron_main:/etc/crontabs/root
+      - /etc/localtime:/etc/localtime:ro
+
+networks:
+    webhook:
+      external:
+        name: trae

@@ -1,109 +1,47 @@
-#!/usr/local/bin/python3
-# -*- coding: utf-8 -*-
-
-# Bot Responsável por alertar os dias com maior número de disparos nos seguintes dias:
-# - 5 dia útil do mês
-# - Dia 20
-# - Ultimo da do mês
-
-# API bot: 775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE
-# Chat ID: -343218807
-# Grupo: DEV - INTEG & Tradutor
-
-
-import time
-import logging
 import datetime
 import calendar
 
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
-
-updater = Updater(token='775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE')
-dispatcher = updater.dispatcher
-
-# ----------------------------------------------- Logs ----------------------------------------------#
-logger = logging.getLogger('c3po')
-hdlr = logging.FileHandler('c3po.log')
-pattern = "%(asctime)s | %(levelname)s | %(message)s"
-formatter = logging.Formatter(pattern)
-hdlr.setFormatter(formatter)
-logger.addHandler(hdlr)
-logger.setLevel(logging.INFO)
+from utils import Utils
 
 
-def dias_uteis():
-    now = datetime.datetime.now()
-    hoje = now.strftime('%d')
-    utils_days = 0
+class C3pO:
+    def __init__(self, logger):
+        self.logger = logger
+        self.func = Utils(logger)
 
-    for i in range(0, int(hoje)):
-        data = datetime.datetime.replace(datetime.datetime.now() + datetime.timedelta(days=-i))
+    def start_c3po(self, bot, update):
+        update.message.reply_text('C3pO ligado com Sucesso !!!')
+        self.func.logar("C3pO ligado com Sucesso !!!")
 
-        if data.weekday() not in [0, 6]:
-            utils_days = utils_days + 1
+    def validate_c3po(self, bot, update):
+        self.func.insert_request(update)
 
-    return utils_days
-
-
-def logar(msg, level='INFO'):
-    if level == "INFO":
-        logger.info(msg)
-        print(msg)
-
-    elif level == "CRITICAL":
-        logger.critical(msg)
-        print(msg)
-
-
-def start(bot, update):
-    try:
-        while True:
+        try:
             now = datetime.datetime.now()
-            logar("Agora... são.. exatamente... %s..." % now.strftime('%H:%M:%S'))
-            if int(now.strftime('%H')) == 8:
-                sent_msg = False
-                qnt_dias_mes = calendar.monthrange(now.year, now.month)[1]
+            self.func.logar("Agora... são.. exatamente... %s..." % now.strftime('%H:%M:%S'))
 
-                for i in range(0, qnt_dias_mes):
-                    data = datetime.datetime.now()
-                    dia_hoje = int(data.strftime('%d'))
+            sent_msg = False
+            qnt_dias_mes = calendar.monthrange(now.year, now.month)[1]
 
-                    if dia_hoje == 20 or dia_hoje == qnt_dias_mes or dias_uteis() == 5:
-                        sent_msg = True
+            data = datetime.datetime.now()
+            dia_hoje = int(data.strftime('%d'))
 
-                    if sent_msg:
-                        bot.sendMessage(chat_id=-343218807,
-                                        text='Atenção: Hoje é dia %s. Dia de maior volume de envios de '
-                                             'SMS/E-MAIL. Monitorar!'
-                                             % dia_hoje)
-                        logar("Atenção: Hoje é dia %s. Dia de maior volume de envios de SMS/E-MAIL. Monitorar!")
+            if dia_hoje == 20 or dia_hoje == qnt_dias_mes or self.func.dias_uteis() == 5:
+                sent_msg = True
 
-                    tomorrow = datetime.datetime.replace(datetime.datetime.now() + datetime.timedelta(days=1),
-                                                         hour=8, minute=0, second=0)
+            if sent_msg:
+                update.message.reply_text('Atenção: Hoje é dia %s. Dia de maior volume de envios de '
+                                          'SMS/E-MAIL. Monitorar!'
+                                          % dia_hoje)
 
-                    logar("Próxima... execução... amanhã.. às... %s... horas" % tomorrow)
-                    delta = tomorrow - datetime.datetime.now()
+                self.func.logar("Atenção: Hoje é dia %s. Dia de maior volume de envios de SMS/E-MAIL. Monitorar!")
 
-                    time.sleep(delta.seconds)
-                    continue
+            else:
+                update.message.reply_text(
+                    "Ainda... não... é... a... hora... certa... aguardando... até... amanhã...")
+                self.func.logar("Ainda... não... é... a... hora... certa... aguardando... até... amanhã...")
 
-            uma_hora = datetime.datetime.replace(datetime.datetime.now() + datetime.timedelta(hours=1))
-            logar("Ainda... não... é... a... hora... certa... verificando... denovo... às... %s " % uma_hora.strftime(
-                '%H:%M:%S'))
-
-            delta = uma_hora - datetime.datetime.now()
-            time.sleep(delta.seconds)
-
-    except Exception as err:
-        bot.sendMessage(chat_id=-343218807, text="Erro no C3PO: %s" % err)
-        logar("[RIP] C3PO foi morto em combate: %s" % err, "CRITICAL")
-        logar("------------------------------------------")
-
-
-logar("------------------------------------------")
-logar("Ligando o c3pO")
-
-start_handler = CommandHandler('volume_mensal', start)
-dispatcher.add_handler(start_handler)
-updater.start_polling()
+        except Exception as err:
+            update.message.reply_text("Erro no C3PO: %s" % err)
+            self.func.logar("[RIP] C3PO foi morto em combate: %s" % err, "CRITICAL")
+            self.func.logar("------------------------------------------")
