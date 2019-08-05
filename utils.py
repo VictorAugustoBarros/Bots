@@ -29,8 +29,7 @@ class Utils:
             print(msg)
 
     def insert_request(self, data):
-        os.chdir('../config/')
-        with open("request.txt", "a+") as file:
+        with open("config/request.txt", "a+") as file:
             data_new = {
                 "Datetime": str(data.message.date),
                 "Chat_ID": data.message.chat_id,

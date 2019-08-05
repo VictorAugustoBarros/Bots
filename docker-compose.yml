@@ -6,8 +6,7 @@ services:
     networks:
       - webhook
     volumes:
-      - ./cron/cron_main:/etc/crontabs/root
-      - /etc/localtime:/etc/localtime:ro
+      - ./cron/cron_main:/etc/crontabs_bot/root
 
 networks:
     webhook:

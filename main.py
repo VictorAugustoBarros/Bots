@@ -10,11 +10,10 @@
 # Chat ID: -343218807
 # Grupo: DEV - INTEG & Tradutor
 
-print("Teste OK")
-
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 
+from datetime import datetime
 import argparse
 import logging
 from utils import Utils
@@ -33,7 +32,11 @@ if __name__ == "__main__":
     logger.setLevel(logging.INFO)
     # ---------------------------------------------------------------------------------------------------#
 
-    bot_token = "775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE"
+    # C3PO
+    # bot_token = "775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE"
+
+    # Teste
+    bot_token = "885441367:AAFcrnwIajbP-RYKN2Wzn87OHiJuD56Qq8I"
 
     updater = Updater(token=bot_token)
     dispatcher = updater.dispatcher
@@ -44,17 +47,10 @@ if __name__ == "__main__":
     args = argparse.ArgumentParser(description='Main')
 
     group = args.add_mutually_exclusive_group(required=True)
-    group.add_argument('--start', action='store_true', help='Start bot')
-    group.add_argument('--volume', action='store_true', help='Executa o script do bot')
 
-    if args.parse_args().start is True:
-        print("Start ...")
-        start_handler = CommandHandler('start', c3po.start_c3po)
-        dispatcher.add_handler(start_handler)
-        updater.start_polling()
+    group.add_argument('--c3po', action='store_true', help='Start bot c3po')
 
-    if args.parse_args().volume is True:
-        print("Volume Mensal ...")
-        start_handler = CommandHandler('volume_mensal', c3po.validate_c3po)
+    if args.parse_args().c3po is True:
+        start_handler = CommandHandler('volume_mensal', c3po.control_bot)
         dispatcher.add_handler(start_handler)
         updater.start_polling()

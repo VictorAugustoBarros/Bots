@@ -1,5 +1,7 @@
 import datetime
 import calendar
+import schedule
+import time
 
 from utils import Utils
 
@@ -8,12 +10,14 @@ class C3pO:
     def __init__(self, logger):
         self.logger = logger
         self.func = Utils(logger)
+        self.update = ""
+        self.bot = ""
 
-    def start_c3po(self, bot, update):
-        update.message.reply_text('C3pO ligado com Sucesso !!!')
-        self.func.logar("C3pO ligado com Sucesso !!!")
 
-    def validate_c3po(self, bot, update):
+    def validate_c3po(self):
+        bot = self.bot
+        update = self.update
+
         self.func.insert_request(update)
 
         try:
@@ -41,7 +45,26 @@ class C3pO:
                     "Ainda... não... é... a... hora... certa... aguardando... até... amanhã...")
                 self.func.logar("Ainda... não... é... a... hora... certa... aguardando... até... amanhã...")
 
+            return True
+
         except Exception as err:
             update.message.reply_text("Erro no C3PO: %s" % err)
             self.func.logar("[RIP] C3PO foi morto em combate: %s" % err, "CRITICAL")
             self.func.logar("------------------------------------------")
+
+    def control_bot(self, bot, update):
+        self.bot = bot
+        self.update = update
+
+        try:
+            schedule.every().day.at("08:00").do(self.validate_c3po)
+
+            while True:
+                # Checks whether a scheduled task
+                # is pending to run or not
+                schedule.run_pending()
+                print("Datetime: %s" % datetime.datetime.now())
+                self.logger.info("Datetime: %s" % datetime.datetime.now())
+                time.sleep(1)
+        except Exception as err:
+            print(err)
