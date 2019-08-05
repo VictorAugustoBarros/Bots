@@ -41,8 +41,6 @@ class C3pO:
                 self.func.logar("Atenção: Hoje é dia %s. Dia de maior volume de envios de SMS/E-MAIL. Monitorar!")
 
             else:
-                update.message.reply_text(
-                    "Ainda... não... é... a... hora... certa... aguardando... até... amanhã...")
                 self.func.logar("Ainda... não... é... a... hora... certa... aguardando... até... amanhã...")
 
             return True
