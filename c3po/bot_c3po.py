@@ -59,12 +59,9 @@ class C3pO:
         try:
             schedule.every().day.at("08:00").do(self.validate_c3po)
 
+            self.func.logar("Schedules OK")
             while True:
-                # Checks whether a scheduled task
-                # is pending to run or not
                 schedule.run_pending()
-                print("Datetime: %s" % datetime.datetime.now())
-                self.logger.info("Datetime: %s" % datetime.datetime.now())
                 time.sleep(1)
         except Exception as err:
             print(err)

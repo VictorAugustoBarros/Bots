@@ -33,10 +33,10 @@ if __name__ == "__main__":
     # ---------------------------------------------------------------------------------------------------#
 
     # C3PO
-    # bot_token = "775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE"
+    bot_token = "775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE"
 
     # Teste
-    bot_token = "885441367:AAFcrnwIajbP-RYKN2Wzn87OHiJuD56Qq8I"
+    # bot_token = "885441367:AAFcrnwIajbP-RYKN2Wzn87OHiJuD56Qq8I"
 
     updater = Updater(token=bot_token)
     dispatcher = updater.dispatcher
