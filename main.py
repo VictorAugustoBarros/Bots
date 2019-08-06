@@ -20,7 +20,6 @@ from utils import Utils
 from c3po.bot_c3po import C3pO
 
 if __name__ == "__main__":
-    print("Ligando o c3pO")
 
     # ----------------------------------------------- Logs ----------------------------------------------#
     logger = logging.getLogger('c3po')
@@ -36,7 +35,7 @@ if __name__ == "__main__":
     bot_token = "775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE"
 
     # Teste
-    # bot_token = "885441367:AAFcrnwIajbP-RYKN2Wzn87OHiJuD56Qq8I"
+    # bot_token = "885441367:AAGwhasqgMux9acW5kHhB5YzgX1hdNjaThA"
 
     updater = Updater(token=bot_token)
     dispatcher = updater.dispatcher
@@ -51,6 +50,7 @@ if __name__ == "__main__":
     group.add_argument('--c3po', action='store_true', help='Start bot c3po')
 
     if args.parse_args().c3po is True:
+        print("Aguardando Instruções via Telegram ...")
         start_handler = CommandHandler('volume_mensal', c3po.control_bot)
         dispatcher.add_handler(start_handler)
         updater.start_polling()

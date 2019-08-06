@@ -13,16 +13,12 @@ class C3pO:
         self.update = ""
         self.bot = ""
 
-
     def validate_c3po(self):
         bot = self.bot
         update = self.update
 
-        self.func.insert_request(update)
-
         try:
             now = datetime.datetime.now()
-            self.func.logar("Agora... são.. exatamente... %s..." % now.strftime('%H:%M:%S'))
 
             sent_msg = False
             qnt_dias_mes = calendar.monthrange(now.year, now.month)[1]
@@ -41,7 +37,7 @@ class C3pO:
                 self.func.logar("Atenção: Hoje é dia %s. Dia de maior volume de envios de SMS/E-MAIL. Monitorar!")
 
             else:
-                self.func.logar("Ainda... não... é... a... hora... certa... aguardando... até... amanhã...")
+                self.func.logar("[TESTE] Hoje é apenas um dia normal !")
 
             return True
 
@@ -54,10 +50,11 @@ class C3pO:
         self.bot = bot
         self.update = update
 
+        self.func.insert_request(update)
+
         try:
             schedule.every().day.at("08:00").do(self.validate_c3po)
 
-            self.func.logar("Schedules OK")
             while True:
                 schedule.run_pending()
                 time.sleep(1)
