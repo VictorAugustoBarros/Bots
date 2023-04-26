@@ -2,6 +2,7 @@ import datetime
 import calendar
 import schedule
 import time
+import json
 
 from utils import Utils
 
@@ -14,6 +15,12 @@ class C3pO:
         self.bot = ""
 
     def validate_c3po(self):
+        chat_id = []
+        for reg in open('config/request.txt', 'r').readlines():
+            json_tmp = json.loads(reg)
+            chat_id.append(json_tmp['Chat_ID'])
+
+        chat_id = set(chat_id)
         bot = self.bot
         update = self.update
 
@@ -30,14 +37,19 @@ class C3pO:
                 sent_msg = True
 
             if sent_msg:
-                update.message.reply_text('Atenção: Hoje é dia %s. Dia de maior volume de envios de '
+                for id in chat_id:
+                    self.bot.send_message(id,
+                                          'Atenção: Hoje é dia %s. Dia de maior volume de envios de '
                                           'SMS/E-MAIL. Monitorar!'
                                           % dia_hoje)
 
                 self.func.logar("Atenção: Hoje é dia %s. Dia de maior volume de envios de SMS/E-MAIL. Monitorar!")
 
             else:
-                self.func.logar("[TESTE] Hoje é apenas um dia normal !")
+                for id in chat_id:
+                    self.bot.send_message(id, 'Hoje é apenas um dia normal !')
+
+                self.func.logar("Hoje é apenas um dia normal !")
 
             return True
 
@@ -47,16 +59,17 @@ class C3pO:
             self.func.logar("------------------------------------------")
 
     def control_bot(self, bot, update):
+        self.func.insert_request(update)
         self.bot = bot
         self.update = update
 
-        self.func.insert_request(update)
-
         try:
-            schedule.every().day.at("08:00").do(self.validate_c3po)
+            schedule.every().day.at("10:30").do(self.validate_c3po)
+            schedule.every(5).seconds.do(self.validate_c3po)
 
             while True:
                 schedule.run_pending()
+                print(datetime.datetime.now())
                 time.sleep(1)
         except Exception as err:
             print(err)

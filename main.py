@@ -16,6 +16,9 @@ from telegram.ext import CommandHandler
 from datetime import datetime
 import argparse
 import logging
+import schedule
+import threading
+import time
 from utils import Utils
 from c3po.bot_c3po import C3pO
 
@@ -32,13 +35,12 @@ if __name__ == "__main__":
     # ---------------------------------------------------------------------------------------------------#
 
     # C3PO
-    bot_token = "775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE"
+    # bot_token = "775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE"
 
     # Teste
-    # bot_token = "885441367:AAGwhasqgMux9acW5kHhB5YzgX1hdNjaThA"
+    bot_token = "885441367:AAGwhasqgMux9acW5kHhB5YzgX1hdNjaThA"
 
     updater = Updater(token=bot_token)
-    dispatcher = updater.dispatcher
 
     func = Utils(logger)
     c3po = C3pO(logger)
@@ -47,10 +49,11 @@ if __name__ == "__main__":
 
     group = args.add_mutually_exclusive_group(required=True)
 
+    group.add_argument('--start', action='store_true', help='Register Chat ID')
     group.add_argument('--c3po', action='store_true', help='Start bot c3po')
 
-    if args.parse_args().c3po is True:
-        print("Aguardando Instruções via Telegram ...")
-        start_handler = CommandHandler('volume_mensal', c3po.control_bot)
-        dispatcher.add_handler(start_handler)
-        updater.start_polling()
+    if args.parse_args().start is True:
+        print("Registrando usuário ...")
+        updater.dispatcher.add_handler(CommandHandler('start', c3po.control_bot))
+        updater.start_polling(clean=True)
+        updater.idle()

@@ -16,4 +16,4 @@ RUN chmod +x /opt/bot_telegram/main.py
 
 RUN ln -snf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && echo America/Sao_Paulo > /etc/timezone
 
-RUN /usr/local/bin/python3 /opt/bot_telegram/main.py --c3po
+RUN /usr/local/bin/python3 /opt/bot_telegram/main.py --start

@@ -1,5 +1,5 @@
 import datetime
-import os
+import json
 
 
 class Utils:
@@ -36,4 +36,5 @@ class Utils:
                 "Bot_Name": data.message.from_user.bot.name,
                 "User": data.message.from_user.full_name
             }
-            file.write(str(data_new) + "\n")
+            json.dump(data_new, file)
+            file.write("\n")
