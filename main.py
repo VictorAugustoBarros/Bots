@@ -1,14 +1,4 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
-# Bot Responsável por alertar os dias com maior número de disparos nos seguintes dias:
-# - 5 dia útil do mês
-# - Dia 20
-# - Ultimo da do mês
-
-# API bot: 775230963:AAHDhyGD-05hps3p0tDajqJGV9GCDBDmhpE
-# Chat ID: -343218807
-# Grupo: DEV - INTEG & Tradutor
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
